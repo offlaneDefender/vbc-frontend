@@ -13,7 +13,7 @@ interface ContractsState {
 }
 
 // Define the initial state using that type
-const initialState: ContractsState = {
+export const initialContractsState: ContractsState = {
     contracts: [],
     contract: {
         _id: '',
@@ -58,15 +58,18 @@ const initialState: ContractsState = {
 export const contractsSlice = createSlice({
     name: 'contracts',
     // `createSlice` will infer the state type from the `initialState` argument
-    initialState,
+    initialState: initialContractsState,
     reducers: {
         setContracts: (state, action: PayloadAction<Contract[]>) => {
             state.contracts = action.payload;
-        }
+        },
+        cancelForm: (state) => {
+            state.contract = initialContractsState.contract;
+        },
     },
 })
 
-export const { setContracts } = contractsSlice.actions
+export const { setContracts, cancelForm } = contractsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectContracts = (state: RootState) => state.contracts.contracts;

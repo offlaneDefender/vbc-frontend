@@ -12,7 +12,7 @@ export const NavBar: FC = () => {
             <NavButton path='/patientForm' />
             <NavButton path='/patientList' />
             <NavButton path='/contracts' />
-            <NavButton path='/products' />
+            <NavButton path='/contractForm' />
         </nav>
     );
 };
