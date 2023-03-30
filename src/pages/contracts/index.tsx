@@ -28,8 +28,10 @@ const ContractsPage = () => {
       </Head>
       <main className={`flex flex-col items-center justify-center h-screen ${font.className}`}>
         <NavBar />
-        <h1 className="text-2xl font-bold">🫀 Value based contracts</h1>
-        <ContractsTable />
+        <h1 className="text-2xl font-bold pt-10 pb-4">🫀 Value based contracts</h1>
+        <div className='w-3/4 h-3/4'>
+          <ContractsTable />
+        </div>
       </main>
     </>
   )
