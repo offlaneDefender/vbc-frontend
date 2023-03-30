@@ -1,5 +1,6 @@
 import { initialContractsState } from "@/features/contracts/slice";
-import { Contract, Patient } from "@/types/types";
+import { useGetMedicinalProductsQuery } from "@/features/products/api";
+import { Contract } from "@/types/types";
 import { useState } from "react";
 
 interface ContractFormProps {
@@ -11,6 +12,8 @@ interface ContractFormProps {
 
 const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, onCancel }) => {
     const [contract, setContract] = useState<Contract>(initialContractsState.contract);
+
+    const products = useGetMedicinalProductsQuery();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -56,8 +59,9 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                         })}
                     >
                         <option value="">Select a product</option>
-                        <option value="1">Product 1</option>
-                        <option value="2">Product 2</option>
+                        {products.data?.map((product) => (
+                            <option key={product._id} value={product._id}>{product.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="flex gap-x-2 justify-center items-center w-full">
