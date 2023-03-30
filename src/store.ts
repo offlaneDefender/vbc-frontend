@@ -13,7 +13,7 @@ export const store = configureStore({
         contracts: contractsReducer,
     },
     middleware(getDefaultMiddleware) {
-        return getDefaultMiddleware().concat(patientsApi.middleware)
+        return getDefaultMiddleware().concat(patientsApi.middleware).concat(contractsApi.middleware)
     },
 })
 

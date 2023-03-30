@@ -4,7 +4,7 @@ import { useGetContractsQuery } from '@/features/contracts/api'
 import { setContracts } from '@/features/contracts/slice'
 import { useAppDispatch } from '@/hooks'
 import { font } from '@/utils/font'
-import { Head } from 'next/document'
+import Head from 'next/head'
 import React, { useEffect } from 'react'
 
 const ContractsPage = () => {
@@ -28,7 +28,7 @@ const ContractsPage = () => {
       </Head>
       <main className={`flex flex-col items-center justify-center h-screen ${font.className}`}>
         <NavBar />
-        <h1 className="text-6xl font-bold">🫀 Value based contracts</h1>
+        <h1 className="text-2xl font-bold">🫀 Value based contracts</h1>
         <ContractsTable />
       </main>
     </>
