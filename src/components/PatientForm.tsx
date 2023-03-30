@@ -5,9 +5,10 @@ interface PatientFormProps {
     onSubmit: (patient: Patient) => void;
     loading: boolean;
     error?: string;
+    onCancel: () => void;
 }
 
-const PatientForm: React.FC<PatientFormProps> = ({onSubmit, loading, error}) => {
+const PatientForm: React.FC<PatientFormProps> = ({ onSubmit, loading, error, onCancel }) => {
     const [patient, setPatient] = useState<Patient>({
         name: "",
         age: 0,
@@ -106,15 +107,27 @@ const PatientForm: React.FC<PatientFormProps> = ({onSubmit, loading, error}) => 
                         {stageOptions}
                     </datalist>
                 </div>
-                <button className="p-2 border-red-200 border-2
-                transition duration-300 ease-in-out transform
-                hover:bg-red-200 hover:text-white hover:scale-105
-                disabled:opacity-50 disabled:cursor-not-allowed
-                disabled:hover:bg-gray-100 disabled:hover:text-inherit disabled:hover:scale-100
-                "
-                    type="submit"
-                    disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0 || loading}
-                >Submit</button>
+
+                <div className="flex gap-x-10 justify-center items-center w-full">
+                    <button
+                        type="reset"
+                        className="p-2 border-red-300 border-2
+                        transition duration-300 ease-in-out transform
+                        hover:bg-gray-100 hover:text-red-500 hover:scale-105"
+                        onClick={onCancel}>
+                        Cancel
+                    </button>
+
+                    <button
+                        className="p-2 border-red-200 border-2
+                        transition duration-300 ease-in-out transform
+                        hover:bg-red-200 hover:text-white hover:scale-105
+                        disabled:opacity-50 disabled:cursor-not-allowed
+                        disabled:hover:bg-gray-100 disabled:hover:text-inherit disabled:hover:scale-100"
+                        type="submit"
+                        disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0 || loading}
+                    >Submit</button>
+                </div>
             </form>
         </div>
     );
