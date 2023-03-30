@@ -44,6 +44,6 @@ export interface Contract{
     packSize: PackSize;
     discount: Discount;
     totalValue: number;
-    startDate: Date;
+    startDate: string;
     notes: string;
 }
