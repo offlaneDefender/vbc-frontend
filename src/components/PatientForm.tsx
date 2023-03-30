@@ -1,7 +1,13 @@
 import { Patient } from "@/types/types";
 import { useState } from "react";
 
-const PatientForm: React.FC = () => {
+interface PatientFormProps {
+    onSubmit: (patient: Patient) => void;
+    loading: boolean;
+    error?: string;
+}
+
+const PatientForm: React.FC<PatientFormProps> = ({onSubmit, loading, error}) => {
     const [patient, setPatient] = useState<Patient>({
         name: "",
         age: 0,
@@ -13,8 +19,12 @@ const PatientForm: React.FC = () => {
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(patient);
+        onSubmit(patient);
     };
+
+    const stageOptions = Array.from({ length: 4 }, (_, i) => i + 1).map((i) => (
+        <option key={i} value={i} label={i.toString()} />
+    ));
 
     return (
         <div className="flex w-full h-full items-center justify-center">
@@ -33,6 +43,7 @@ const PatientForm: React.FC = () => {
                 flex flex-col w-1/2 h-full justify-center items-center p-4 bg-gray-200 rounded-lg shadow-lg text-gray-800 text-xl
                 gap-4"
             >
+                {error && <p className="text-red-500">{error}</p>}
                 <div className="flex gap-x-2 justify-center items-center w-full">
                     <label htmlFor="name"
                         className="w-10 -ml-2 mr-2">Name</label>
@@ -92,18 +103,17 @@ const PatientForm: React.FC = () => {
                         onChange={(e) => setPatient({ ...patient, stage: parseInt(e.target.value) as typeof patient.stage })}
                     />
                     <datalist id="stageValues">
-                        <option value="1" label="1" />
-                        <option value="2" label="2" />
-                        <option value="3" label="3" />
-                        <option value="4" label="4" />
+                        {stageOptions}
                     </datalist>
                 </div>
                 <button className="p-2 border-red-200 border-2
                 transition duration-300 ease-in-out transform
                 hover:bg-red-200 hover:text-white hover:scale-105
-                disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled:opacity-50 disabled:cursor-not-allowed
+                disabled:hover:bg-gray-100 disabled:hover:text-inherit disabled:hover:scale-100
+                "
                     type="submit"
-                    disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0}
+                    disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0 || loading}
                 >Submit</button>
             </form>
         </div>
