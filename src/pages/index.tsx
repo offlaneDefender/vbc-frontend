@@ -13,7 +13,7 @@ export default function Home() {
       </Head>
       <main className={`flex flex-col items-center justify-center h-screen ${font.className}`}>
         <NavBar />
-        <h1 className="text-6xl font-bold">Value based contracts</h1>
+        <h1 className="text-6xl font-bold">🫀 Value based contracts</h1>
         <p className="text-2xl font-bold">Coming soon</p>
       </main>
     </>
