@@ -1,3 +1,4 @@
+import { NavBar } from '@/components/NavBar'
 import { font } from '@/utils/font'
 import Head from 'next/head'
 
@@ -11,6 +12,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={`flex flex-col items-center justify-center h-screen ${font.className}`}>
+        <NavBar />
         <h1 className="text-6xl font-bold">Value based contracts</h1>
         <p className="text-2xl font-bold">Coming soon</p>
       </main>

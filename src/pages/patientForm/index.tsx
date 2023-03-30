@@ -6,9 +6,12 @@ import { useCreatePatientMutation } from '@/features/patients/api';
 import { Patient } from '@/types/types';
 import { LoadingSpinner } from '@/components/LoadingSpinner';
 import parseError from '@/utils/parseError';
+import { useRouter } from 'next/router';
 
 const PatientFormPage: React.FC = () => {
     const [createPatient, { isLoading, error }] = useCreatePatientMutation();
+
+    const router = useRouter();
 
     const handleSubmit = (patient: Patient) => {
         createPatient(patient);
@@ -16,7 +19,7 @@ const PatientFormPage: React.FC = () => {
 
     const errorMessage = useMemo(() => {
         if (error) {
-            if( 'status' in error) {
+            if ('status' in error) {
                 return parseError(typeof error.status === 'number' ? error.status : 500);
             }
             return parseError(500);
@@ -29,7 +32,12 @@ const PatientFormPage: React.FC = () => {
             {
                 isLoading && <LoadingSpinner />
             }
-            <PatientForm onSubmit={handleSubmit} loading={isLoading} error={errorMessage} />
+            <PatientForm
+                onSubmit={handleSubmit}
+                loading={isLoading}
+                error={errorMessage}
+                onCancel={() => router.back()}
+            />
         </main>
     );
 };
