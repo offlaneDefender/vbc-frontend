@@ -14,7 +14,11 @@ const PatientFormPage: React.FC = () => {
     const router = useRouter();
 
     const handleSubmit = (patient: Patient) => {
-        createPatient(patient);
+        createPatient(patient).then(() => {
+            router.push('/patients')
+        }).catch((err) => {
+            console.log(err);
+        });;
     };
 
     const errorMessage = useMemo(() => {

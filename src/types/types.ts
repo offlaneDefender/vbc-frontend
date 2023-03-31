@@ -35,6 +35,7 @@ export interface Patient{
     stage: 1 | 2 | 3 | 4;
     pfs: number;
     os: number;
+    discount: Discount;
 }
 
 export interface Contract{
@@ -44,6 +45,6 @@ export interface Contract{
     packSize: PackSize;
     discount: Discount;
     totalValue: number;
-    startDate: Date;
+    startDate: string;
     notes: string;
 }
