@@ -15,7 +15,7 @@ const PatientFormPage: React.FC = () => {
 
     const handleSubmit = (patient: Patient) => {
         createPatient(patient).then(() => {
-            router.push('/patients')
+            router.push('/patientList')
         }).catch((err) => {
             console.log(err);
         });;

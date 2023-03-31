@@ -1,3 +1,4 @@
+import { useGetDiscountsQuery } from "@/features/discounts/api";
 import { Patient } from "@/types/types";
 import { useState } from "react";
 
@@ -16,7 +17,13 @@ const PatientForm: React.FC<PatientFormProps> = ({ onSubmit, loading, error, onC
         os: 0,
         pfs: 0,
         stage: 1,
+        discount: {
+            _id: "",
+            value: 0,
+        },
     });
+
+    const discounts = useGetDiscountsQuery();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -108,6 +115,23 @@ const PatientForm: React.FC<PatientFormProps> = ({ onSubmit, loading, error, onC
                     </datalist>
                 </div>
 
+                <div className="flex gap-x-2 justify-center items-center w-full">
+                    <label htmlFor="discount">Discount</label>
+                    <select
+                        id="discount"
+                        value={patient.discount._id}
+                        onChange={(e) => setPatient({
+                            ...patient, discount: discounts.data?.find((discount) => discount._id === e.target.value) ||
+                                { _id: e.target.value, value: 0 }
+                        })}
+                    >
+                        <option value="" label="None" />
+                        {discounts.data?.map((discount) => (
+                            <option key={discount._id} value={discount._id} label={`${discount.value * 100}%`} />
+                        ))}
+                    </select>
+                </div>
+
                 <div className="flex gap-x-10 justify-center items-center w-full">
                     <button
                         type="reset"
@@ -125,7 +149,8 @@ const PatientForm: React.FC<PatientFormProps> = ({ onSubmit, loading, error, onC
                         disabled:opacity-50 disabled:cursor-not-allowed
                         disabled:hover:bg-gray-100 disabled:hover:text-inherit disabled:hover:scale-100"
                         type="submit"
-                        disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0 || loading}
+                        disabled={patient.name === "" || patient.age === 0 || patient.os === 0 || patient.pfs === 0
+                        || patient.discount._id === "" || loading}
                     >Submit</button>
                 </div>
             </form>
