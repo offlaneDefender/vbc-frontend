@@ -21,7 +21,7 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
     const packSizes = useGetPackSizesQuery();
     const discounts = useGetDiscountsQuery();
 
-    const totalValue = contract.product.prices[0].price * (1 - contract.discount.value);
+    const totalValue = contract.product.prices[0].price * (1 - contract.patient.discount.value);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

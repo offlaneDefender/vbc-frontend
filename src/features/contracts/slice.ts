@@ -24,6 +24,10 @@ export const initialContractsState: ContractsState = {
             stage: 1,
             pfs: 0,
             os: 0,
+            discount: {
+                _id: '',
+                value: 0,
+            },
         },
         product: {
             _id: '',
