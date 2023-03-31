@@ -1,4 +1,7 @@
 import { initialContractsState } from "@/features/contracts/slice";
+import { useGetDiscountsQuery } from "@/features/discounts/api";
+import { useGetPackSizesQuery } from "@/features/packSizes/api";
+import { useGetPatientsQuery } from "@/features/patients/api";
 import { useGetMedicinalProductsQuery } from "@/features/products/api";
 import { Contract } from "@/types/types";
 import { useState } from "react";
@@ -14,17 +17,21 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
     const [contract, setContract] = useState<Contract>(initialContractsState.contract);
 
     const products = useGetMedicinalProductsQuery();
+    const patients = useGetPatientsQuery();
+    const packSizes = useGetPackSizesQuery();
+    const discounts = useGetDiscountsQuery();
+
+    const totalValue = contract.product.prices[0].price * (1 - contract.discount.value);
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        onSubmit(contract);
+        onSubmit({...contract, totalValue: totalValue});
     };
 
     const onReset = () => {
         setContract(initialContractsState.contract);
         onCancel();
     };
-
 
     return (
         <div className="flex w-full h-full items-center justify-center">
@@ -37,7 +44,7 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                 text-center"
             >
                 Contract Form {'\n'}
-                Total value: {contract.totalValue}
+                Total value: {totalValue}
             </h1>
             <form onSubmit={handleSubmit} className="
                 flex flex-col w-1/2 h-screen justify-center items-center p-4 bg-gray-200 rounded-lg shadow-lg text-gray-800 text-xl
@@ -52,10 +59,12 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                         value={contract.product._id}
                         onChange={(e) => setContract({
                             ...contract,
-                            product: {
-                                ...contract.product,
-                                _id: e.target.value,
-                            },
+                            product:
+                                products.data?.find((product) => product._id === e.target.value)
+                                ?? {
+                                    ...contract.product,
+                                    _id: e.target.value,
+                                },
                         })}
                     >
                         <option value="">Select a product</option>
@@ -73,15 +82,17 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                         value={contract.patient._id}
                         onChange={(e) => setContract({
                             ...contract,
-                            patient: {
+                            patient: patients.data?.find((patient) => patient._id === e.target.value)
+                                ?? {
                                 ...contract.patient,
                                 _id: e.target.value,
                             },
                         })}
                     >
                         <option value="">Select a patient</option>
-                        <option value="1">Patient 1</option>
-                        <option value="2">Patient 2</option>
+                        {patients.data?.map((patient) => (
+                            <option key={patient._id} value={patient._id}>{patient.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="flex gap-x-2 justify-center items-center w-full">
@@ -93,15 +104,17 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                         value={contract.packSize._id}
                         onChange={(e) => setContract({
                             ...contract,
-                            packSize: {
-                                ...contract.packSize,
-                                _id: e.target.value,
-                            },
+                            packSize:
+                                packSizes.data?.find((packSize) => packSize._id === e.target.value) ?? {
+                                    ...contract.packSize,
+                                    _id: e.target.value,
+                                },
                         })}
                     >
                         <option value="">Select a pack size</option>
-                        <option value="1">Pack Size 1</option>
-                        <option value="2">Pack Size 2</option>
+                        {packSizes.data?.map((packSize) => (
+                            <option key={packSize._id} value={packSize._id}>{packSize.name}</option>
+                        ))}
                     </select>
                 </div>
                 <div className="flex gap-x-2 justify-center items-center w-full">
@@ -113,15 +126,17 @@ const ContractForm: React.FC<ContractFormProps> = ({ onSubmit, loading, error, o
                         value={contract.discount._id}
                         onChange={(e) => setContract({
                             ...contract,
-                            discount: {
+                            discount:
+                                discounts.data?.find((discount) => discount._id === e.target.value) ?? {
                                 ...contract.discount,
                                 _id: e.target.value,
                             },
                         })}
                     >
                         <option value="">Select a discount</option>
-                        <option value="1">Discount 1</option>
-                        <option value="2">Discount 2</option>
+                        {discounts.data?.map((discount) => (
+                            <option key={discount._id} value={discount._id}>{discount.value * 100}%</option>
+                        ))}
                     </select>
                 </div>
                 <div className="flex gap-x-2 justify-center items-center w-full">
